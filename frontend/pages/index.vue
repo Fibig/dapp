@@ -22,7 +22,7 @@ const state = reactive({
 
 // SOCKET
 const socketUrl = "http://localhost:4000";
-const socket = io(socketUrl);
+const socket = ref(io(socketUrl));
 
 // LIFE CYCLE
 onMounted(() => {
@@ -43,16 +43,12 @@ async function metaMaskConnect() {
             return;
         }
 
-        socket.on("connect", () => {
-            state.connected = true;
-        });
-
-        socket.emit("setWallet", accounts.value[0]);
+        socket.value.emit("set-wallet", accounts.value[0]);
     }
 }
 
 function disconnectSocket() {
-    socket.disconnect()
+    socket.value.disconnect()
 }
 
 async function buyVerification() {
